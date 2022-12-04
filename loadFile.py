@@ -6,7 +6,6 @@ def loadInCrates():
     dataList = data.readlines()
     for x in dataList:
         dataList[dataList.index(x)] = x.strip()
-    print(dataList)
     return dataList
 
 if __name__ == "__main__":
