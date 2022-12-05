@@ -38,21 +38,26 @@ try:
 except Exception as e:
     pass
 
+
 def addCrate(containerID, crateContents):
-    insertionList = list(containerID, crateContents)
-    cursor.execute("INSERT INTO Crates VALUES (?, ?)", insertionList)
+    # insertionList = list(containerID).append(crateContents)
+    cursor.execute(
+        f"INSERT INTO Crates VALUES ({containerID}, '{crateContents}')")
     conn.commit()
     print(f"{crateContents} was inserted into container {containerID}")
 
 # get the container ID from the table, to allow the crates to be inserted correctly.
+
+
 def getContainerId():
-    cursor.execute("SELECT ContainerID FROM Containers ORDER BY ContainerID DESC LIMIT 1")
+    cursor.execute(
+        "SELECT ContainerID FROM Containers ORDER BY ContainerID DESC LIMIT 1")
     result = cursor.fetchall()
     # converts the result from [(n,)] to just n
     result = str(result).strip("[( ,)]")
     print(result)
     return result
-    
+
 
 # function to add container with amount of crates
 def addContainer(container):
@@ -67,4 +72,3 @@ def addContainer(container):
 # con = [{'chairs': 8}, {'coca cola': 4}]
 # addContainer(con)
 # getContainerId()
-
