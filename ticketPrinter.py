@@ -16,29 +16,35 @@ def shortHandCrateSheet():
     cursor.execute("SELECT ContainerID FROM Containers")
     containers = cursor.fetchall()
     for i in containers:
-        formatedList = []
+        formattedList = []
         cursor.execute("SELECT * FROM Crates WHERE ContainerID=?", i)
         crates = cursor.fetchall()
+        print(f"Container {i[0]} contains: ", end="")
         tempSet = set(crates)
         for x in tempSet:
-            tempDict = {x[1]: crates.count(x)}
-            formatedList.append(tempDict)
-        print(f"Container {i[0]} Contains : {formatedList}")
+            tempDict = {"item": x[1], "count": crates.count(x)}
+            formattedList.append(tempDict)
+        # print(f"Container {i[0]} Contains : {formattedList}")
+        for item in formattedList:
+            print(f' {item["item"]} x{item["count"]} crate(s),', end="")
+        print("")
+        blankLine()
 
 
 # Prints every crate but can be chosen whether or not to be called in favour of the shorthand
 def crateSheet():
     flag = False
     while flag != True:
-        choice = input("Do you wish to see all crates? : (Y/N) : ")
+        choice = input("Compact view?: (Y/N) : ")
         if choice.upper() == "Y":
             flag = True
+            shortHandCrateSheet()
+
+        elif choice.upper() == "N":
             cursor.execute("SELECT * FROM Crates")
             crates = cursor.fetchall()
             for i in crates:
                 print(f"Container Number : {i[0]}    Crate Contents: {i[1]}")
-
-        elif choice.upper() == "N":
             flag = True
         elif choice.upper() != "Y" or choice.upper() != "N":
             print("Please choose either Y or N")
@@ -59,5 +65,5 @@ def inventoryTicket():
     blankLine()
 
 
-inventoryTicket()
-shortHandCrateSheet()
+if __name__ == "__main__":
+    inventoryTicket()
