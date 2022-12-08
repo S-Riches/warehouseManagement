@@ -1,4 +1,4 @@
-# this file is going to be used to format data to a human readable format, similiar to how tables are shown in the mysql terminal
+# this file is going to be used to format data to a human readable format, similar to how tables are shown in the mysql terminal
 # from classes import *
 from persistData import *
 
@@ -27,6 +27,7 @@ def shortHandCrateSheet():
         # print(f"Container {i[0]} Contains : {formattedList}")
         for item in formattedList:
             print(f' {item["item"]} x{item["count"]} crate(s),', end="")
+        # print a blank line
         print("")
         blankLine()
 

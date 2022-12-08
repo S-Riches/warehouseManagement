@@ -3,9 +3,12 @@ from loadFile import *
 import classes
 # running this automatically sets up the DB
 from persistData import *
-
-
+import ticketPrinter
+import shipOutCrates
+import searchForCrates
 # more useful for testing to avoid duplicates
+
+
 def askBeforeReading():
     flag = False
     while flag != True:
@@ -20,7 +23,7 @@ def askBeforeReading():
 
 
 # containing function
-def loadInTextFile():
+def loadInTextFile():  # create data, needs to be inputted in the text file
 
     testList = loadInCrates()
 
@@ -57,5 +60,53 @@ def loadInTextFile():
             addCrate(containerID, crate)
 
 
-if __name__ == "__main__":
+def mainOptions():
+    # prompts the user if they want to load in the text file
     askBeforeReading()
+    # flag boolean value to determine whether the user has decided to close the program or not
+    isRunning = True
+    while isRunning:
+        ticketPrinter.blankLine()
+        print("Please input an option :")
+        print("1. View a ticket of the warehouse inventory")  # read
+        print("2. Search for a specific item")  # search
+        # delete and also update as the containers are updated after shipping out
+        print("3. Ship out items")
+        print("4. To exit the program")
+        ticketPrinter.blankLine()
+        while True:
+            try:
+                choice = int(input(" : "))
+                break
+            except Exception:
+                print("Please input a number")
+        if choice == 1:
+            ticketPrinter.blankLine()
+            ticketPrinter.inventoryTicket()
+        elif choice == 2:
+            inputList = []
+            # create a list here to be put into the function
+            while True:
+                ticketPrinter.blankLine()
+                inputList.append(input("Item Name :"))
+                choice = input("Done? (Y/N) : ")
+                if choice.upper() == "Y":
+                    break
+            result = searchForCrates.searchForCrates(inputList)
+            if len(result) > 0:
+                for item in result:
+                    print(
+                        f' x{item["count"]} crate(s) of {item["item"]} in container: {item["containerID"]}')
+            else:
+                ticketPrinter.blankLine()
+                print("Sorry that item isn't in the warehouse")
+        elif choice == 3:
+            ticketPrinter.blankLine()
+            shipOutCrates.mainShippingFunction()
+        elif choice == 4:
+            print("Goodbye!")
+            break
+
+
+if __name__ == "__main__":
+    mainOptions()

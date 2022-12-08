@@ -68,7 +68,22 @@ def addContainer(container):
     return containerId
 
 
-# testing
-# con = [{'chairs': 8}, {'coca cola': 4}]
-# addContainer(con)
-# getContainerId()
+# delete empty containers
+def manageEmptyContainers():
+    cursor.execute("SELECT ContainerID from Containers")
+    result = cursor.fetchall()
+    for i in result:
+        cursor.execute(f"SELECT * from Crates where ContainerID={i[0]}")
+        listOfCrates = cursor.fetchall()
+        # if empty, delete the container
+        if len(listOfCrates) == 0:
+            cursor.execute(f"DELETE FROM Containers WHERE ContainerID={i[0]}")
+            conn.commit()
+        else:
+            # otherwise just update the crate count.
+            cursor.execute(
+                f"UPDATE Containers set CrateCount={len(listOfCrates)} WHERE ContainerID={i[0]}")
+            conn.commit()
+
+
+manageEmptyContainers()
