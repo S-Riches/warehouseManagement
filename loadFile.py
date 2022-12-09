@@ -1,7 +1,7 @@
 # allow the user to load in a file to be read and put into the warehouse
 
 def loadInCrates():
-    path = "./testData.txt"
+    path = "./Data.txt"
     data = open(path, "r")
     dataList = data.readlines()
     for x in dataList:
